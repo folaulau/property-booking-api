@@ -11,7 +11,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
+import static org.assertj.core.api.Assertions.assertThat;
 import com.booking.api.entity.booking.Booking;
 import com.booking.api.entity.booking.BookingService;
 import com.booking.api.entity.booking.Status;
@@ -69,9 +69,13 @@ class BookingTests {
                 .propertyId(property.getId())
                 .endDate(LocalDate.of(2023, 10, 13)).build();
 
-        assertThrows(RuntimeException.class, () -> {
+        Throwable thrown = assertThrows(RuntimeException.class, () -> {
             bookingService.create(booking2CreateDTO);
         });
+
+        log.info("error message {}", thrown.getMessage());
+
+        assertThat(thrown.getMessage()).isEqualTo("Booking is overlapping");
     }
 
     @Test
@@ -93,6 +97,42 @@ class BookingTests {
                 .build();
 
         savedBooking = bookingService.update(bookingUpdateDTO);
+    }
+
+    @Test
+    void itShouldNotUpdateBooking() {
+
+        BookingCreateDTO bookingCreateDTO = BookingCreateDTO.builder().guestName("John")
+                .startDate(LocalDate.of(2023, 10, 1))
+                .propertyId(property.getId())
+                .endDate(LocalDate.of(2023, 10, 5)).build();
+
+        Booking savedBooking1 = bookingService.create(bookingCreateDTO);
+
+        log.info("savedBooking1={}",savedBooking1);
+
+        bookingCreateDTO = BookingCreateDTO.builder().guestName("John")
+                .startDate(LocalDate.of(2023, 10, 8))
+                .propertyId(property.getId())
+                .endDate(LocalDate.of(2023, 10, 11)).build();
+
+        Booking savedBooking2 = bookingService.create(bookingCreateDTO);
+
+        log.info("savedBooking2={}",savedBooking2);
+
+        BookingUpdateDTO bookingUpdateDTO = BookingUpdateDTO.builder()
+                .uuid(savedBooking1.getUuid())
+                .startDate(savedBooking1.getStartDate())
+                .endDate(LocalDate.of(2023, 10, 8))
+                .build();
+
+        Throwable thrown = assertThrows(RuntimeException.class, () -> {
+            bookingService.update(bookingUpdateDTO);
+        });
+
+        log.info("error message {}", thrown.getMessage());
+
+        assertThat(thrown.getMessage()).isEqualTo("Booking is overlapping");
     }
 
     @Test
