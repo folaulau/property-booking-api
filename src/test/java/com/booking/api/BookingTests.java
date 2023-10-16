@@ -36,6 +36,7 @@ class BookingTests {
     @BeforeEach
     public void init(){
         property = propertyRepository.saveAndFlush(Property.builder()
+                        .id(1L)
                         .address("123 Don rd, 12344 TX")
                 .build());
     }
