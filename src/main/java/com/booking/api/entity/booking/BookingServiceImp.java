@@ -1,5 +1,7 @@
 package com.booking.api.entity.booking;
 
+import com.booking.api.dto.BookingCancelDTO;
+import com.booking.api.dto.BookingUpdateDTO;
 import com.booking.api.entity.block.Block;
 import com.booking.api.entity.property.Property;
 import com.booking.api.entity.property.PropertyRepository;
@@ -47,9 +49,25 @@ public class BookingServiceImp implements BookingService {
     }
 
     @Override
-    public Booking cancel(String uuid, String reason) {
-        Booking booking = bookingRepository.findByUuid(uuid).orElseThrow(() -> new RuntimeException("Booking not found by uuid"));
+    public Booking update(BookingUpdateDTO bookingUpdateDTO) {
+
+        Booking booking = bookingRepository.findByUuid(bookingUpdateDTO.getUuid()).orElseThrow(() -> new RuntimeException("Booking not found by uuid"));
+
+        booking.setStartDate(bookingUpdateDTO.getStartDate());
+        booking.setEndDate(bookingUpdateDTO.getEndDate());
+
+        if(isBookingOverlap(booking)){
+            throw new RuntimeException("Booking is overlapping");
+        }
+
+        return bookingRepository.saveAndFlush(booking);
+    }
+
+    @Override
+    public Booking cancel(BookingCancelDTO bookingCancelDTO) {
+        Booking booking = bookingRepository.findByUuid(bookingCancelDTO.getUuid()).orElseThrow(() -> new RuntimeException("Booking not found by uuid"));
         booking.setStatus(Status.CANCELLED);
+        booking.setCancellationReason(bookingCancelDTO.getReason());
         return bookingRepository.saveAndFlush(booking);
     }
 
@@ -59,8 +77,10 @@ public class BookingServiceImp implements BookingService {
 
         List<Booking> bookings =  bookingRepository.getBookingsByDates(booking.getProperty().getId(),Status.BOOKED, booking.getStartDate(), booking.getEndDate());
 
-        // Remove self (important during updates)
-        bookings.removeIf(b -> b.getId().equals(booking.getId()));
+        if(booking.getId()!=null){
+            // Remove self (important during updates)
+            bookings.removeIf(b -> b.getId().equals(booking.getId()));
+        }
 
         return !blocks.isEmpty() || !bookings.isEmpty();
     }

@@ -2,7 +2,9 @@ package com.booking.api;
 
 import java.time.LocalDate;
 
+import com.booking.api.dto.BookingCancelDTO;
 import com.booking.api.dto.BookingCreateDTO;
+import com.booking.api.dto.BookingUpdateDTO;
 import com.booking.api.entity.property.Property;
 import com.booking.api.entity.property.PropertyRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -73,6 +75,27 @@ class BookingTests {
     }
 
     @Test
+    void itShouldUpdateBooking() {
+
+        BookingCreateDTO bookingCreateDTO = BookingCreateDTO.builder().guestName("John")
+                .startDate(LocalDate.of(2023, 10, 10))
+                .propertyId(property.getId())
+                .endDate(LocalDate.of(2023, 10, 14)).build();
+
+        Booking savedBooking = bookingService.create(bookingCreateDTO);
+
+        log.info("savedBooking={}",savedBooking);
+
+        BookingUpdateDTO bookingUpdateDTO = BookingUpdateDTO.builder()
+                .uuid(savedBooking.getUuid())
+                .startDate(savedBooking.getStartDate())
+                .endDate(LocalDate.of(2023, 10, 16))
+                .build();
+
+        savedBooking = bookingService.update(bookingUpdateDTO);
+    }
+
+    @Test
     void itShouldCancelBooking() {
 
         BookingCreateDTO bookingCreateDTO = BookingCreateDTO.builder().guestName("John")
@@ -84,7 +107,12 @@ class BookingTests {
 
         log.info("savedBooking={}",savedBooking);
 
-        savedBooking = bookingService.cancel(savedBooking.getUuid(), "not needed any more");
+        BookingCancelDTO bookingCancelDTO = BookingCancelDTO.builder()
+                .reason("Not needed anymore")
+                .uuid(savedBooking.getUuid())
+                .build();
+
+        savedBooking = bookingService.cancel(bookingCancelDTO);
 
 
     }

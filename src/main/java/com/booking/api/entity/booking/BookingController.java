@@ -2,12 +2,11 @@ package com.booking.api.entity.booking;
 
 import static org.springframework.http.HttpStatus.OK;
 
+import com.booking.api.dto.BookingCancelDTO;
+import com.booking.api.dto.BookingUpdateDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import com.booking.api.dto.BookingCreateDTO;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -28,6 +27,26 @@ public class BookingController {
         log.info("create={}", bookingCreateDTO);
 
         Booking booking = bookingService.create(bookingCreateDTO);
+
+        return new ResponseEntity<>(booking, OK);
+    }
+
+    @PutMapping
+    public ResponseEntity<Booking> update(@Valid @RequestBody BookingUpdateDTO bookingUpdateDTO) {
+
+        log.info("update={}", bookingUpdateDTO);
+
+        Booking booking = bookingService.update(bookingUpdateDTO);
+
+        return new ResponseEntity<>(booking, OK);
+    }
+
+    @PutMapping("/cancel")
+    public ResponseEntity<Booking> cancel(@Valid @RequestBody BookingCancelDTO bookingCancelDTO) {
+
+        log.info("cancel={}", bookingCancelDTO);
+
+        Booking booking = bookingService.cancel(bookingCancelDTO);
 
         return new ResponseEntity<>(booking, OK);
     }

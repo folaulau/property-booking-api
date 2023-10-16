@@ -36,6 +36,9 @@ public class Booking implements Serializable {
     @Column(name = "guest_name")
     private String            guestName;
 
+    @Column(name = "cancellation_reason")
+    private String            cancellationReason;
+
     @Column(name = "start_date")
     private LocalDate         startDate;
 
