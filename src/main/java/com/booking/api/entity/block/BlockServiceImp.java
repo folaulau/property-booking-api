@@ -22,11 +22,21 @@ public class BlockServiceImp implements BlockService {
 
     @Override
     public Block create(Block block) {
+
+        if(isBlockOverlapWithBooking(block)){
+            throw new RuntimeException("Block is overlapping with booking");
+        }
+
         return blockRepository.saveAndFlush(block);
     }
 
     @Override
     public Block update(Block block) {
+
+        if(isBlockOverlapWithBooking(block)){
+            throw new RuntimeException("Block is overlapping with booking");
+        }
+
         return blockRepository.saveAndFlush(block);
     }
 
@@ -38,5 +48,12 @@ public class BlockServiceImp implements BlockService {
         block.setStatus(Status.CANCELLED);
 
         return blockRepository.saveAndFlush(block);
+    }
+
+    private boolean isBlockOverlapWithBooking(Block block) {
+
+        List<Booking> bookings =  bookingRepository.getBookingsByDates(block.getProperty().getId(),Status.BOOKED, block.getStartDate(), block.getEndDate());
+
+        return !bookings.isEmpty();
     }
 }
