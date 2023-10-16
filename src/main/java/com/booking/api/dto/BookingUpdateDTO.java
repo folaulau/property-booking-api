@@ -2,6 +2,7 @@ package com.booking.api.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import jakarta.persistence.Column;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -31,4 +32,8 @@ public class BookingUpdateDTO implements Serializable {
     @NotNull
     @Future
     private LocalDate         endDate;
+
+    private String            guestName;
+
+    private Integer            numberOfGuests;
 }
