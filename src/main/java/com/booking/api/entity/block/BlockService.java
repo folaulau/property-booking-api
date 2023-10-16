@@ -1,12 +1,16 @@
 package com.booking.api.entity.block;
 
+import com.booking.api.dto.BlockCancelDTO;
+import com.booking.api.dto.BlockCreateDTO;
+import com.booking.api.dto.BlockUpdateDTO;
+
 public interface BlockService {
 
-    Block create(Block block);
+    Block create(BlockCreateDTO blockCreateDTO);
 
 
-    Block update(Block block);
+    Block update(BlockUpdateDTO blockUpdateDTO);
 
 
-    Block cancel(Long id, String reason);
+    Block cancel(BlockCancelDTO blockCancelDTO);
 }

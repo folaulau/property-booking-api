@@ -34,8 +34,11 @@ public class Block implements Serializable {
     @Column(name = "uuid", unique = true, nullable = false, updatable = false)
     private String            uuid;
 
-    @Column(name = "reason")
-    private String            reason;
+    @Column(name = "cancellation_reason")
+    private String            cancellationReason;
+
+    @Column(name = "purpose")
+    private String            purpose;
 
     @Column(name = "start_date")
     private LocalDate         startDate;
