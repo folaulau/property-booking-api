@@ -26,6 +26,9 @@ public class BookingCreateDTO implements Serializable {
     private String            guestName;
 
     @NotNull
+    private Integer            numberOfGuests;
+
+    @NotNull
     @Future
     private LocalDate         startDate;
 

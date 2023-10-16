@@ -38,6 +38,7 @@ public class BookingServiceImp implements BookingService {
         booking.setGuestName(bookingCreateDTO.getGuestName());
         booking.setStartDate(bookingCreateDTO.getStartDate());
         booking.setEndDate(bookingCreateDTO.getEndDate());
+        booking.setNumberOfGuests(bookingCreateDTO.getNumberOfGuests());
         booking.setStatus(Status.BOOKED);
         booking.setProperty(property);
 
