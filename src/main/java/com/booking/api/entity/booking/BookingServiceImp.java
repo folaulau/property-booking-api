@@ -61,7 +61,10 @@ public class BookingServiceImp implements BookingService {
             throw new RuntimeException("Booking is overlapping");
         }
 
-        booking.setNumberOfGuests(bookingUpdateDTO.getNumberOfGuests());
+        if(bookingUpdateDTO.getNumberOfGuests()!=null){
+            booking.setNumberOfGuests(bookingUpdateDTO.getNumberOfGuests());
+        }
+
         booking.setGuestName(bookingUpdateDTO.getGuestName());
 
         return bookingRepository.saveAndFlush(booking);

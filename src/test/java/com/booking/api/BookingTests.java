@@ -47,6 +47,7 @@ class BookingTests {
         BookingCreateDTO bookingCreateDTO = BookingCreateDTO.builder().guestName("John")
                 .startDate(LocalDate.of(2023, 10, 10))
                 .propertyId(property.getId())
+                .numberOfGuests(2)
                 .endDate(LocalDate.of(2023, 10, 14)).build();
 
         Booking savedBooking = bookingService.create(bookingCreateDTO);
@@ -61,6 +62,7 @@ class BookingTests {
         BookingCreateDTO bookingCreateDTO = BookingCreateDTO.builder().guestName("John")
                 .startDate(LocalDate.of(2023, 10, 10))
                 .propertyId(property.getId())
+                .numberOfGuests(2)
                 .endDate(LocalDate.of(2023, 10, 14)).build();
 
         Booking savedBooking = bookingService.create(bookingCreateDTO);
@@ -70,6 +72,7 @@ class BookingTests {
         BookingCreateDTO booking2CreateDTO = BookingCreateDTO.builder().guestName("John")
                 .startDate(LocalDate.of(2023, 10, 11))
                 .propertyId(property.getId())
+                .numberOfGuests(2)
                 .endDate(LocalDate.of(2023, 10, 13)).build();
 
         Throwable thrown = assertThrows(RuntimeException.class, () -> {
@@ -88,6 +91,7 @@ class BookingTests {
         BookingCreateDTO bookingCreateDTO = BookingCreateDTO.builder().guestName("John")
                 .startDate(LocalDate.of(2023, 10, 10))
                 .propertyId(property.getId())
+                .numberOfGuests(2)
                 .endDate(LocalDate.of(2023, 10, 14)).build();
 
         Booking savedBooking = bookingService.create(bookingCreateDTO);
@@ -110,6 +114,7 @@ class BookingTests {
         BookingCreateDTO bookingCreateDTO = BookingCreateDTO.builder().guestName("John")
                 .startDate(LocalDate.of(2023, 10, 1))
                 .propertyId(property.getId())
+                .numberOfGuests(2)
                 .endDate(LocalDate.of(2023, 10, 5)).build();
 
         Booking savedBooking1 = bookingService.create(bookingCreateDTO);
@@ -119,6 +124,7 @@ class BookingTests {
         bookingCreateDTO = BookingCreateDTO.builder().guestName("John")
                 .startDate(LocalDate.of(2023, 10, 8))
                 .propertyId(property.getId())
+                .numberOfGuests(2)
                 .endDate(LocalDate.of(2023, 10, 11)).build();
 
         Booking savedBooking2 = bookingService.create(bookingCreateDTO);
@@ -147,6 +153,7 @@ class BookingTests {
         BookingCreateDTO bookingCreateDTO = BookingCreateDTO.builder().guestName("John")
                 .startDate(LocalDate.of(2023, 10, 10))
                 .propertyId(property.getId())
+                .numberOfGuests(2)
                 .endDate(LocalDate.of(2023, 10, 14)).build();
 
         Booking savedBooking = bookingService.create(bookingCreateDTO);
