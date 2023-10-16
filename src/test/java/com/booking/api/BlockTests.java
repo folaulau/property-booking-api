@@ -16,6 +16,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 
@@ -45,6 +46,7 @@ class BlockTests {
                 .build());
     }
 
+    @Transactional
     @Test
     void itShouldCreateBlock() {
 
@@ -59,6 +61,7 @@ class BlockTests {
         log.info("savedBlock={}",savedBlock);
     }
 
+    @Transactional
     @Test
     void itShouldNotCreateBlockOnExistingBooking() {
 
@@ -85,7 +88,7 @@ class BlockTests {
 
         assertThat(thrown.getMessage()).isEqualTo("Block is overlapping with booking");
     }
-
+    @Transactional
     @Test
     void itShouldCreateBlockBetweenExistingBookings() {
 
@@ -119,7 +122,7 @@ class BlockTests {
 
         assertThat(block).isNotNull();
     }
-
+    @Transactional
     @Test
     void itShouldNotCreateBlockBetweenExistingBookings() {
 
@@ -156,6 +159,7 @@ class BlockTests {
         assertThat(thrown.getMessage()).isEqualTo("Block is overlapping with booking");
     }
 
+    @Transactional
     @Test
     void itShouldUpdate() {
 
@@ -187,6 +191,7 @@ class BlockTests {
         assertThat(block).isNotNull();
     }
 
+    @Transactional
     @Test
     void itShouldNotUpdate() {
 
@@ -222,21 +227,23 @@ class BlockTests {
         assertThat(thrown.getMessage()).isEqualTo("Block is overlapping with booking");
     }
 
+    @Transactional
     @Test
     void itShouldCancelBlock() {
 
-        BookingCreateDTO bookingCreateDTO1 = BookingCreateDTO.builder().guestName("John")
-                .startDate(LocalDate.of(2023, 10, 10))
+        BlockCreateDTO blockCreateDTO1 = BlockCreateDTO.builder()
                 .propertyId(property.getId())
-                .endDate(LocalDate.of(2023, 10, 14)).build();
+                .reason("Cleaning")
+                .startDate(LocalDate.of(2023, 10, 3))
+                .endDate(LocalDate.of(2023, 10, 8)).build();
 
-        Booking savedBooking1 = bookingService.create(bookingCreateDTO1);
+        Block block = blockService.create(blockCreateDTO1);
 
-        log.info("savedBooking1={}",savedBooking1);
+        log.info("block={}",block);
 
         BlockCancelDTO blockCancelDTO = BlockCancelDTO.builder()
                 .reason("No longer needed")
-                .uuid(savedBooking1.getUuid())
+                .uuid(block.getUuid())
                 .build();
 
         Block savedBlock = blockService.cancel(blockCancelDTO);

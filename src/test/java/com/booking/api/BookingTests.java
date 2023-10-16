@@ -17,6 +17,7 @@ import com.booking.api.entity.booking.BookingService;
 import com.booking.api.entity.booking.Status;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.transaction.annotation.Transactional;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -39,6 +40,7 @@ class BookingTests {
                 .build());
     }
 
+    @Transactional
     @Test
     void itShouldCreateBooking() {
 
@@ -52,6 +54,7 @@ class BookingTests {
         log.info("savedBooking={}",savedBooking);
     }
 
+    @Transactional
     @Test
     void itShouldNotCreateBooking() {
 
@@ -78,6 +81,7 @@ class BookingTests {
         assertThat(thrown.getMessage()).isEqualTo("Booking is overlapping");
     }
 
+    @Transactional
     @Test
     void itShouldUpdateBooking() {
 
@@ -99,6 +103,7 @@ class BookingTests {
         savedBooking = bookingService.update(bookingUpdateDTO);
     }
 
+    @Transactional
     @Test
     void itShouldNotUpdateBooking() {
 
@@ -135,6 +140,7 @@ class BookingTests {
         assertThat(thrown.getMessage()).isEqualTo("Booking is overlapping");
     }
 
+    @Transactional
     @Test
     void itShouldCancelBooking() {
 
